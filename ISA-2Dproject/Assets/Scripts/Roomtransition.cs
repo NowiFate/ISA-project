@@ -2,16 +2,13 @@
 
 public class Roomtransition : MonoBehaviour
 {
-    public Vector3 cameraShove;
-    public Vector3 playerShove;
-    public Camera mainCam;
+    public Transform target;
+    public Vector2 roomSize;
+    public float smoothCam;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void Update()
     {
-        if (other.CompareTag("Player"))
-        {
-            mainCam.transform.position += cameraShove;
-            other.transform.position += playerShove;
-        }
+        Vector3 pos = new Vector3(Mathf.RoundToInt(target.position.x / roomSize.x) * roomSize.x, Mathf.RoundToInt(target.position.y / roomSize.y) * roomSize.y, transform.position.z);
+        transform.position = Vector3.Lerp(transform.position, pos, smoothCam);
     }
 }

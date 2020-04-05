@@ -12,4 +12,9 @@ public class DontTouch : MonoBehaviour
             youDied.Invoke();
         }
     }
+
+    public void EnemyDeath()
+    {
+        Destroy(gameObject);
+    }
 }
