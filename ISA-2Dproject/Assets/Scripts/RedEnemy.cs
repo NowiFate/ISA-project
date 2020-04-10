@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class DontTouch : MonoBehaviour
+public class RedEnemy : MonoBehaviour
 {
     public UnityEvent youDied;
 

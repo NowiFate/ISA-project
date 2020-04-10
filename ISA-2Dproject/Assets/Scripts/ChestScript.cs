@@ -12,7 +12,7 @@ public class ChestScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (isOpen == false) //Ik wil dat je op e moet drukken, dus misschien later
+            if (isOpen == false)
             {
                 isOpen = true;
                 spriteRenderer.sprite = openChest;

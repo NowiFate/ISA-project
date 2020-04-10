@@ -4,8 +4,9 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     public float ResetDelay = 1f;
-
     public GameObject ResetScreen;
+
+    public bool bossDefeated = false;
 
     public void GameOver()
     {

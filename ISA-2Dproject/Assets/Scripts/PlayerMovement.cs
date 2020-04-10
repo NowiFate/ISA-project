@@ -4,11 +4,6 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 8f;
     public float extraSpeedForRunning = 3f;
-    private float timeBtwAttacks;
-    public float startTimeBtwAttacks;
-    public Transform attackPos;
-    public float attackRange;
-    public LayerMask whatIsEnemy;
 
     public static bool scriptedEvent = false;
 
@@ -38,30 +33,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 moveSpeed -= extraSpeedForRunning;
             }
-
-            //combat
-            if (timeBtwAttacks <= 0)
-            {
-                if (Input.GetKey(KeyCode.E))
-                {
-                    Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange,whatIsEnemy);
-                    for (int i = 0; i < enemiesToDamage.Length; i++)
-                    {
-                        enemiesToDamage[i].GetComponent<DontTouch>().EnemyDeath();
-                    }
-                    timeBtwAttacks = startTimeBtwAttacks;
-                }
-            }
-            else
-            {
-                timeBtwAttacks -= Time.deltaTime;
-            }
         }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 }
