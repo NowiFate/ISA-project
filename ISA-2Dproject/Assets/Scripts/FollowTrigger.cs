@@ -6,7 +6,7 @@ public class FollowTrigger : MonoBehaviour
 
     public GameObject referredPlayer;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         Combat combat = referredPlayer.GetComponent<Combat>();
 
