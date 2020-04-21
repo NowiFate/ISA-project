@@ -449,7 +449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 469923016}
   m_Layer: 0
-  m_Name: PowerUps
+  m_Name: Power-Ups
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -472,12 +472,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &552591366 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 172314818630744064, guid: 47280e610d8e280429ae57c5c6f6f7fe,
-    type: 3}
-  m_PrefabInstance: {fileID: 854637804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &588725014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 63670959463432354, guid: 01fa3b74053155343bf9e1b518f31b62,
@@ -868,7 +862,7 @@ PrefabInstance:
         type: 3}
       propertyPath: weaponType
       value: 
-      objectReference: {fileID: 552591366}
+      objectReference: {fileID: 1982593302}
     - target: {fileID: 7896008229881448259, guid: 8461ec55a12bc90429f55913c7fa3c6a,
         type: 3}
       propertyPath: startTimeBtwAttacks
@@ -1543,6 +1537,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2096862998614618202, guid: 1331962a711ef224285e5c83f6ca97fa,
     type: 3}
   m_PrefabInstance: {fileID: 178751767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1982593302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8984340941090268494, guid: 47280e610d8e280429ae57c5c6f6f7fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 854637804}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2035638239
 GameObject:
