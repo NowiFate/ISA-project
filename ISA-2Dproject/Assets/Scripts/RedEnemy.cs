@@ -15,6 +15,6 @@ public class RedEnemy : MonoBehaviour
 
     public void EnemyDeath()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

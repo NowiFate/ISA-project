@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public class Combat : MonoBehaviour
+public class CombatSingleton : MonoBehaviour
 {
+    public static CombatSingleton Instance;
+
     public GameObject weaponType;
 
+    private float weaponNumber;
     public float startTimeBtwAttacks;
     private float timeBtwAttacks;
     private float attackRange;
@@ -14,7 +17,7 @@ public class Combat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Instance = this;
     }
 
     // Update is called once per frame
@@ -23,6 +26,7 @@ public class Combat : MonoBehaviour
         if(weaponType != null)
         {
             WeaponScript weaponScript = weaponType.GetComponent<WeaponScript>();
+            weaponNumber = weaponScript.weaponStateNumber;
             startTimeBtwAttacks = weaponScript.localStartTimeBtwAttacks;
             attackRange = weaponScript.localAttackRange;
             weaponScript.localWeaponText.SetActive(true);
@@ -33,6 +37,17 @@ public class Combat : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E))
             {
+                //wapen geluid effect
+                if (weaponNumber == 1 || weaponNumber == 3)
+                {
+                    FindObjectOfType<AudioManager>().Play("SlashSound");
+                }
+
+                if (weaponNumber == 2)
+                {
+                    FindObjectOfType<AudioManager>().Play("FireSlash");
+                }
+
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemy);
                 for (int i = 0; i < enemiesToDamage.Length; i++)
                 {

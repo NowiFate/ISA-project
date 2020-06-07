@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowPlayer : MonoBehaviour
@@ -29,12 +28,13 @@ public class FollowPlayer : MonoBehaviour
 
         if(followTrigger.triggered == false)
         {
-            Invoke("GoingBack", waitingTime);
+            StartCoroutine(GoingBack());
         }
     }
 
-    public void GoingBack()
+    IEnumerator GoingBack()
     {
+        yield return new WaitForSeconds(waitingTime);
         transform.position = Vector2.MoveTowards(transform.position, startPos.position, backSpeed * Time.deltaTime);
     }
 }

@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 moveSpeed += extraSpeedForRunning;
+                FindObjectOfType<AudioManager>().Play("RunSound");
             }
 
             if (Input.GetKeyUp(KeyCode.LeftShift))

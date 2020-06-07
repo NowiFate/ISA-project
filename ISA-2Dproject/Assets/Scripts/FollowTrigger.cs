@@ -8,9 +8,7 @@ public class FollowTrigger : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Combat combat = referredPlayer.GetComponent<Combat>();
-
-        if (combat.weaponType.name != "NinjaWeapon")
+        if (CombatSingleton.Instance.weaponType.name != "NinjaWeapon")
         {
             triggered = true;
         }

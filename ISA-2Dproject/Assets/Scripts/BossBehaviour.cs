@@ -3,29 +3,31 @@ using UnityEngine.Events;
 
 public class BossBehaviour : MonoBehaviour
 {
-    public SpriteRenderer bossSprite;
-    public BoxCollider2D bossCollider;
-    public Animator bossTakesDamage;
     public GameObject gameMananger;
 
     public float bossHP = 3;
+    [SerializeField]
     public float bossSpeed;
+    private Vector2 bossPos;
     public Transform target;
 
     public BoxCollider2D triggerBox;
 
     public UnityEvent bossKilledYou;
 
+    private void Awake()
+    {
+        bossPos = this.transform.position;
+    }
+
     // Update is called once per frame
     void Update()
     {
         BossTrigger bossTrigger = triggerBox.GetComponent<BossTrigger>();
 
-        if (bossTrigger.begin == true)
+        if (bossTrigger.beginBossBattle == true)
         {
-            bossSprite.enabled = true;
-            bossCollider.enabled = true;
-
+            //stalking the player
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
             transform.position = Vector2.MoveTowards(transform.position, target.position, bossSpeed * Time.deltaTime);
         }
@@ -42,13 +44,18 @@ public class BossBehaviour : MonoBehaviour
     public void BossLifes()
     {
         bossHP -= 1;
-        bossTakesDamage.enabled = true;
 
         if (bossHP < 1)
         {
-            LevelManager levelManager = gameMananger.GetComponent<LevelManager>();
-            levelManager.bossDefeated = true;
-            Destroy(gameObject);
+            LevelManager.Instance.bossDefeated = true;
+            gameObject.SetActive(false);
+            FindObjectOfType<AudioManager>().StopPlaying("BossMusic");
+            FindObjectOfType<AudioManager>().Play("EndingTheme");
         }
+    }
+
+    public void bossRespawn()
+    {
+        this.transform.position = bossPos;
     }
 }

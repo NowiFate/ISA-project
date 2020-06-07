@@ -2,7 +2,7 @@
 
 public class Teleporter : MonoBehaviour
 {
-    [SerializeField] private Transform teleport;
+    public Transform teleport;
 
     private void OnTriggerEnter2D(Collider2D other)
     {

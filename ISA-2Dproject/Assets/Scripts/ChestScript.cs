@@ -3,8 +3,10 @@
 public class ChestScript : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
-
     public Sprite openChest, closedChest;
+
+    public GameObject itemScreen;
+    private bool screenOn = false;
 
     private bool isOpen = false;
 
@@ -16,7 +18,26 @@ public class ChestScript : MonoBehaviour
             {
                 isOpen = true;
                 spriteRenderer.sprite = openChest;
+                FindObjectOfType<AudioManager>().Play("ChestSound");
+                itemScreen.SetActive(true);
+                screenOn = true;
             }
+        }
+    }
+
+    //ItemScreen
+    private void Update()
+    {
+        if (screenOn == true)
+        {
+            PlayerMovement.scriptedEvent = true;
+        }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            screenOn = false;
+            itemScreen.SetActive(false);
+            PlayerMovement.scriptedEvent = false;
         }
     }
 }

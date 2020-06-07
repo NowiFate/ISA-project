@@ -16,11 +16,9 @@ public class FrozenSlime : MonoBehaviour
 
     public void FrozenDeath()
     {
-        Combat combat = referencePlayer.GetComponent<Combat>();
-
-        if (combat.weaponType.name == "FireWeapon")
+        if (CombatSingleton.Instance.weaponType.name == "FireWeapon")
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }
