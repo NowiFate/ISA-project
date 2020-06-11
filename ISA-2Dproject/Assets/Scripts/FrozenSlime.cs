@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 public class FrozenSlime : MonoBehaviour
 {
-    public UnityEvent youDied;
     public GameObject referencePlayer;
+    public UnityEvent youDied;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -18,7 +18,12 @@ public class FrozenSlime : MonoBehaviour
     {
         if (CombatSingleton.Instance.weaponType.name == "FireWeapon")
         {
+            FindObjectOfType<AudioManager>().Play("IceBreaking");
             gameObject.SetActive(false);
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().Play("HittingIce");
         }
     }
 }

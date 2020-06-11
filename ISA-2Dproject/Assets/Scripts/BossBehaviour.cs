@@ -3,19 +3,16 @@ using UnityEngine.Events;
 
 public class BossBehaviour : MonoBehaviour
 {
-    public GameObject gameMananger;
-
     public float bossHP = 3;
-    [SerializeField]
     public float bossSpeed;
     private Vector2 bossPos;
-    public Transform target;
+    private Transform target;
 
     public BoxCollider2D triggerBox;
 
     public UnityEvent bossKilledYou;
 
-    private void Awake()
+    private void Start()
     {
         bossPos = this.transform.position;
     }
@@ -47,8 +44,8 @@ public class BossBehaviour : MonoBehaviour
 
         if (bossHP < 1)
         {
-            LevelManager.Instance.bossDefeated = true;
             gameObject.SetActive(false);
+            LevelManager.Instance.bossDefeated = true;
             FindObjectOfType<AudioManager>().StopPlaying("BossMusic");
             FindObjectOfType<AudioManager>().Play("EndingTheme");
         }
@@ -56,6 +53,7 @@ public class BossBehaviour : MonoBehaviour
 
     public void bossRespawn()
     {
+        gameObject.SetActive(false);
         this.transform.position = bossPos;
     }
 }

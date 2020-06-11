@@ -1,21 +1,32 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class Combat : MonoBehaviour
+public class CombatSingleton : MonoBehaviour
 {
-    public GameObject weaponType;
+    public static CombatSingleton Instance;
 
-    private float weaponNumber;
+    [HideInInspector]
+    public GameObject weaponType;
+    private bool qPressed = false;
+
+    private int selectedWeapon;
     public float startTimeBtwAttacks;
     private float timeBtwAttacks;
     private float attackRange;
 
+    WeaponScript weaponScript;
     public Transform attackPos;
     public LayerMask whatIsEnemy;
+
+    public List<GameObject> currentWeapons;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Instance = this;
+        weaponType = currentWeapons[selectedWeapon];
+        weaponScript = weaponType.GetComponent<WeaponScript>();
+        weaponScript.localWeaponText.SetActive(true);
     }
 
     // Update is called once per frame
@@ -23,55 +34,69 @@ public class Combat : MonoBehaviour
     {
         if(weaponType != null)
         {
-            WeaponScript weaponScript = weaponType.GetComponent<WeaponScript>();
-            weaponNumber = weaponScript.weaponStateNumber;
+            weaponScript = weaponType.GetComponent<WeaponScript>();
             startTimeBtwAttacks = weaponScript.localStartTimeBtwAttacks;
             attackRange = weaponScript.localAttackRange;
-            weaponScript.localWeaponText.SetActive(true);
         }
 
-        //combat
-        if (timeBtwAttacks <= 0)
+        if (LevelManager.Instance.scriptedEvent == false)
         {
-            if (Input.GetKey(KeyCode.E))
+            //Press Q to switch weapons
+            if (Input.GetKey(KeyCode.Q))
             {
-                //wapen geluid effect
-                if (weaponNumber == 1 || weaponNumber == 3)
+                if (qPressed == false)
                 {
-                    FindObjectOfType<AudioManager>().Play("SlashSound");
+                    WeaponSwitch();
+                    qPressed = true;
                 }
+            }
+            else
+            {
+                qPressed = false;
+            }
 
-                if (weaponNumber == 2)
+            //combat
+            if (timeBtwAttacks <= 0)
+            {
+                if (Input.GetKey(KeyCode.E))
                 {
-                    FindObjectOfType<AudioManager>().Play("FireSlash");
+                    //wapen geluid effect
+                    if (weaponScript.weaponStateNumber == 1 || weaponScript.weaponStateNumber == 3) FindObjectOfType<AudioManager>().Play("SlashSound");
+
+                    if (weaponScript.weaponStateNumber == 2) FindObjectOfType<AudioManager>().Play("FireSlash");
+
+                    Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemy);
+                    for (int i = 0; i < enemiesToDamage.Length; i++)
+                    {
+                        if (enemiesToDamage[i].GetComponent<RedEnemy>() != null) enemiesToDamage[i].GetComponent<RedEnemy>().EnemyDeath();
+
+                        if (enemiesToDamage[i].GetComponent<FrozenSlime>() != null) enemiesToDamage[i].GetComponent<FrozenSlime>().FrozenDeath();
+
+                        if (enemiesToDamage[i].GetComponent<BossBehaviour>() != null) enemiesToDamage[i].GetComponent<BossBehaviour>().BossLifes();
+                    }
+                    timeBtwAttacks = startTimeBtwAttacks;
                 }
-
-                Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemy);
-                for (int i = 0; i < enemiesToDamage.Length; i++)
-                {
-                    if (enemiesToDamage[i].GetComponent<RedEnemy>() != null)
-                    {
-                        enemiesToDamage[i].GetComponent<RedEnemy>().EnemyDeath();
-                    }
-
-                    if (enemiesToDamage[i].GetComponent<FrozenSlime>() != null)
-                    {
-                        enemiesToDamage[i].GetComponent<FrozenSlime>().FrozenDeath();
-                    }
-
-                    if (enemiesToDamage[i].GetComponent<BossBehaviour>() != null)
-                    {
-                        enemiesToDamage[i].GetComponent<BossBehaviour>().BossLifes();
-                    }
-                }
-                timeBtwAttacks = startTimeBtwAttacks;
+            }
+            else
+            {
+                timeBtwAttacks -= Time.deltaTime;
             }
         }
-        else
-        {
-            timeBtwAttacks -= Time.deltaTime;
-        }
     }
+
+    private void WeaponSwitch()
+    {
+        weaponScript = weaponType.GetComponent<WeaponScript>();
+
+        weaponScript.localWeaponText.SetActive(false);
+        selectedWeapon+=1;
+        if (selectedWeapon > currentWeapons.Count-1) selectedWeapon = 0;
+        weaponType = currentWeapons[selectedWeapon];
+
+        weaponScript = weaponType.GetComponent<WeaponScript>();
+        weaponScript.localWeaponText.SetActive(true);
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

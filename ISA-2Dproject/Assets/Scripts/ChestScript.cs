@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class ChestScript : MonoBehaviour
 {
@@ -7,8 +8,10 @@ public class ChestScript : MonoBehaviour
 
     public GameObject itemScreen;
     private bool screenOn = false;
-
     private bool isOpen = false;
+    [Space]
+    public GameObject weaponInChest;
+    public UnityEvent chestEvents;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -16,11 +19,22 @@ public class ChestScript : MonoBehaviour
         {
             if (isOpen == false)
             {
+                //Open Chest
                 isOpen = true;
                 spriteRenderer.sprite = openChest;
                 FindObjectOfType<AudioManager>().Play("ChestSound");
-                itemScreen.SetActive(true);
-                screenOn = true;
+                chestEvents.Invoke();
+                if(itemScreen != null)
+                {
+                    itemScreen.SetActive(true);
+                    screenOn = true;
+                }
+
+                //Add weapon
+                if(weaponInChest != null)
+                {
+                    CombatSingleton.Instance.currentWeapons.Add(weaponInChest);
+                }
             }
         }
     }
@@ -28,16 +42,20 @@ public class ChestScript : MonoBehaviour
     //ItemScreen
     private void Update()
     {
-        if (screenOn == true)
+        if (itemScreen != null)
         {
-            PlayerMovement.scriptedEvent = true;
-        }
 
-        if (Input.GetKey(KeyCode.E))
-        {
-            screenOn = false;
-            itemScreen.SetActive(false);
-            PlayerMovement.scriptedEvent = false;
+            if (screenOn == true)
+            {
+                LevelManager.Instance.scriptedEvent = true;
+            }
+
+            if (Input.GetKey(KeyCode.E))
+            {
+                screenOn = false;
+                itemScreen.SetActive(false);
+                LevelManager.Instance.scriptedEvent = false;
+            }
         }
     }
 }

@@ -2,21 +2,20 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 8f;
-    public float extraSpeedForRunning = 3f;
-
-    public static bool scriptedEvent = false;
+    private float moveSpeed;
+    public float walkSpeed = 3f;
+    public float runSpeed = 2f;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        moveSpeed = walkSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (scriptedEvent == false)
+        if (LevelManager.Instance.scriptedEvent == false)
         {
             //Movement
             Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
@@ -26,13 +25,13 @@ public class PlayerMovement : MonoBehaviour
             //rennen
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                moveSpeed += extraSpeedForRunning;
+                moveSpeed = runSpeed;
                 FindObjectOfType<AudioManager>().Play("RunSound");
             }
 
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
-                moveSpeed -= extraSpeedForRunning;
+                moveSpeed = walkSpeed;
             }
         }
     }

@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
 
     public Vector2 respawnPoint;
     public bool bossDefeated = false;
+    public bool scriptedEvent = false;
 
     private void Start()
     {
@@ -26,7 +27,7 @@ public class LevelManager : MonoBehaviour
     {
         BossTrigger bossTrigger = boss.GetComponent<BossTrigger>();
 
-        PlayerMovement.scriptedEvent = true;
+        scriptedEvent = true;
         ResetScreen.SetActive(true);
         FindObjectOfType<AudioManager>().StopPlaying("BossMusic");
         FindObjectOfType<AudioManager>().StopPlaying("MainTheme");
@@ -38,7 +39,6 @@ public class LevelManager : MonoBehaviour
     {
         BossBehaviour bossBehaviour = boss.GetComponent<BossBehaviour>();
 
-        PlayerMovement.scriptedEvent = false;
         ResetScreen.SetActive(false);
         //resetting boss battle
         BossTrigger.bossMusicPlaying = false;
@@ -59,5 +59,6 @@ public class LevelManager : MonoBehaviour
         {
             enms.SetActive(true);
         }
+        scriptedEvent = false;
     }
 }
