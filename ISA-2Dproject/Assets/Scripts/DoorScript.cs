@@ -5,7 +5,6 @@ public class DoorScript : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Sprite openDoor, closedDoor;
     private bool isOpen = false;
-    public int numberOfKeys = 0;
     private BoxCollider2D boxCollider;
 
     // Start is called before the first frame update
@@ -20,18 +19,18 @@ public class DoorScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (numberOfKeys > 0 && isOpen == false)
+            if (LevelManager.Instance.numberOfKeys > 0 && isOpen == false)
             {
                 spriteRenderer.sprite = openDoor;
                 boxCollider.enabled = false;
                 isOpen = true;
-                numberOfKeys -= 1;
+                LevelManager.Instance.numberOfKeys -= 1;
             }
         }
     }
 
     public void GetAKey()
     {
-        numberOfKeys += 1;
+        LevelManager.Instance.numberOfKeys += 1;
     }
 }

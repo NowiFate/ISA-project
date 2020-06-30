@@ -14,7 +14,7 @@ public class BossBehaviour : MonoBehaviour
 
     private void Start()
     {
-        bossPos = this.transform.position;
+        bossPos = transform.position;
     }
 
     // Update is called once per frame
@@ -30,30 +30,34 @@ public class BossBehaviour : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.gameObject.tag.Equals("Player"))
-        {
-            bossKilledYou.Invoke();
-        }
+        if (collision.gameObject.tag.Equals("Player")) bossKilledYou.Invoke();
     }
 
     public void BossLifes()
     {
         bossHP -= 1;
+        FindObjectOfType<AudioManager>().Play("BossHurt");
 
         if (bossHP < 1)
         {
+            BossTrigger bossTrigger = triggerBox.GetComponent<BossTrigger>();
+
+            gameObject.GetComponent<PolygonCollider2D>().enabled = false;
             gameObject.SetActive(false);
             LevelManager.Instance.bossDefeated = true;
             FindObjectOfType<AudioManager>().StopPlaying("BossMusic");
             FindObjectOfType<AudioManager>().Play("EndingTheme");
+
+            if (bossTrigger.leftCollider != null) bossTrigger.leftCollider.SetActive(false);
+            if (bossTrigger.rightCollider != null) bossTrigger.rightCollider.SetActive(false);
         }
     }
 
-    public void bossRespawn()
+    public void BossRespawn()
     {
+        gameObject.transform.position = bossPos;
         gameObject.SetActive(false);
-        this.transform.position = bossPos;
     }
 }

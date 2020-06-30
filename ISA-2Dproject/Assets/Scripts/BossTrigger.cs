@@ -5,6 +5,7 @@ public class BossTrigger : MonoBehaviour
     public bool beginBossBattle = false;
     public GameObject boss;
     public GameObject gameMananger;
+    public GameObject leftCollider, rightCollider;
     public static bool bossMusicPlaying = false;
 
     private void Update()
@@ -22,6 +23,8 @@ public class BossTrigger : MonoBehaviour
         if (other.gameObject.tag.Equals("Player") && levelManager.bossDefeated == false)
         {
             beginBossBattle = true;
+            if (leftCollider != null) leftCollider.SetActive(true);
+            if (rightCollider != null) rightCollider.SetActive(true);
             if (bossMusicPlaying == false)
             {
                 FindObjectOfType<AudioManager>().StopPlaying("MainTheme");
@@ -35,5 +38,7 @@ public class BossTrigger : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         beginBossBattle = false;
+        leftCollider.SetActive(false);
+        rightCollider.SetActive(false);
     }
 }

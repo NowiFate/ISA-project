@@ -3,12 +3,11 @@ using UnityEngine.Events;
 
 public class FrozenSlime : MonoBehaviour
 {
-    public GameObject referencePlayer;
     public UnityEvent youDied;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.gameObject.tag.Equals("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             youDied.Invoke();
         }

@@ -6,4 +6,6 @@ public class WeaponScript : MonoBehaviour
     public float localStartTimeBtwAttacks;
     public float localAttackRange;
     public GameObject localWeaponText;
+
+    public float weaponWalk, weaponRun;
 }

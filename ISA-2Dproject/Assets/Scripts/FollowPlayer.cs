@@ -7,26 +7,26 @@ public class FollowPlayer : MonoBehaviour
     public float backSpeed;
     public float waitingTime;
 
-    public Transform startPos;
+    private Vector2 startPos;
     private Transform stalkTarget;
-    public BoxCollider2D spawner;
+    public GameObject startZone;
 
-    private void Start()
+    private void Awake()
     {
-        
+        startPos = transform.position;
+        stalkTarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        FollowTrigger followTrigger = spawner.GetComponent<FollowTrigger>();
-        if (followTrigger.triggered == true)
+        if (startZone.GetComponent<FollowTrigger>().triggered == true)
         {
-            stalkTarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+            StopCoroutine(GoingBack());
             transform.position = Vector2.MoveTowards(transform.position, stalkTarget.position, followSpeed * Time.deltaTime);
         }
 
-        if(followTrigger.triggered == false)
+        if(startZone.GetComponent<FollowTrigger>().triggered == false)
         {
             StartCoroutine(GoingBack());
         }
@@ -35,6 +35,6 @@ public class FollowPlayer : MonoBehaviour
     IEnumerator GoingBack()
     {
         yield return new WaitForSeconds(waitingTime);
-        transform.position = Vector2.MoveTowards(transform.position, startPos.position, backSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, startPos, backSpeed * Time.deltaTime);
     }
 }

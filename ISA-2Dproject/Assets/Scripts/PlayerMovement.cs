@@ -2,13 +2,18 @@
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement Instance;
     private float moveSpeed;
-    public float walkSpeed = 3f;
-    public float runSpeed = 2f;
+    [System.NonSerialized]
+    public  float walkSpeed = 3f;
+    [System.NonSerialized]
+    public float runSpeed = 5f;
+    private bool runPressed = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        Instance = this;
         moveSpeed = walkSpeed;
     }
 
@@ -22,14 +27,23 @@ public class PlayerMovement : MonoBehaviour
 
             transform.position += movement * Time.deltaTime * moveSpeed;
 
-            //rennen
+            //runButton
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                moveSpeed = runSpeed;
+                runPressed = true;
                 FindObjectOfType<AudioManager>().Play("RunSound");
             }
 
             if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                runPressed = false;
+            }
+
+            if (runPressed == true)
+            {
+                moveSpeed = runSpeed;
+            }
+            else
             {
                 moveSpeed = walkSpeed;
             }

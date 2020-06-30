@@ -45,4 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResetDelay: 2
   ResetScreen: {fileID: 0}
+  Player: {fileID: 0}
+  boss: {fileID: 0}
+  lastCheckpoint: {fileID: 0}
+  keyText: {fileID: 0}
+  respawnPoint: {x: 0, y: 0}
   bossDefeated: 0
+  scriptedEvent: 0
+  numberOfKeys: 0

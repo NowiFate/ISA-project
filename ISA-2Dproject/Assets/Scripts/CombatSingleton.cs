@@ -11,8 +11,10 @@ public class CombatSingleton : MonoBehaviour
 
     private int selectedWeapon;
     public float startTimeBtwAttacks;
+    public int weaponNumber;
     private float timeBtwAttacks;
     private float attackRange;
+    private float walking, running;
 
     WeaponScript weaponScript;
     public Transform attackPos;
@@ -35,8 +37,11 @@ public class CombatSingleton : MonoBehaviour
         if(weaponType != null)
         {
             weaponScript = weaponType.GetComponent<WeaponScript>();
+            weaponNumber = weaponScript.weaponStateNumber;
             startTimeBtwAttacks = weaponScript.localStartTimeBtwAttacks;
             attackRange = weaponScript.localAttackRange;
+            walking = weaponScript.weaponWalk;
+            running = weaponScript.weaponRun;
         }
 
         if (LevelManager.Instance.scriptedEvent == false)
@@ -55,16 +60,22 @@ public class CombatSingleton : MonoBehaviour
                 qPressed = false;
             }
 
+            //moveSpeed balancing
+            PlayerMovement.Instance.walkSpeed = walking;
+            PlayerMovement.Instance.runSpeed = running;
+
+
             //combat
             if (timeBtwAttacks <= 0)
             {
                 if (Input.GetKey(KeyCode.E))
                 {
-                    //wapen geluid effect
-                    if (weaponScript.weaponStateNumber == 1 || weaponScript.weaponStateNumber == 3) FindObjectOfType<AudioManager>().Play("SlashSound");
+                    //weapon sound effect
+                    if (weaponNumber == 1) FindObjectOfType<AudioManager>().Play("SlashSound");
+                    if (weaponNumber == 2) FindObjectOfType<AudioManager>().Play("FireSlash");
+                    if (weaponNumber == 3) FindObjectOfType<AudioManager>().Play("NinjaSlash");
 
-                    if (weaponScript.weaponStateNumber == 2) FindObjectOfType<AudioManager>().Play("FireSlash");
-
+                    //damage
                     Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemy);
                     for (int i = 0; i < enemiesToDamage.Length; i++)
                     {

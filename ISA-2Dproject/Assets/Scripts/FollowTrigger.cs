@@ -4,18 +4,17 @@ public class FollowTrigger : MonoBehaviour
 {
     public bool triggered = false;
 
-    public GameObject referredPlayer;
-
-    private void Update()
-    {
-        triggered = false;
-    }
-
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (CombatSingleton.Instance.weaponType.name != "NinjaWeapon")
+        if (CombatSingleton.Instance.weaponType.name != "NinjaWeapon" && collision.gameObject.CompareTag("Player"))
         {
             triggered = true;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        triggered = false;
+    }
+
 }

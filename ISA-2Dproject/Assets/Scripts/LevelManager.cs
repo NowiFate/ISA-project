@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -8,25 +9,40 @@ public class LevelManager : MonoBehaviour
     public GameObject ResetScreen;
     public GameObject Player;
     public GameObject boss;
+    public GameObject lastCheckpoint;
+    public GameObject keyText;
     GameObject[] allEnemies;
 
     public Vector2 respawnPoint;
     public bool bossDefeated = false;
     public bool scriptedEvent = false;
+    public int numberOfKeys = 0;
 
     private void Start()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         respawnPoint = Player.transform.position;
         allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         FindObjectOfType<AudioManager>().Play("MainTheme");
     }
 
+    private void Update()
+    {
+        if (numberOfKeys > 0 && keyText != null) keyText.SetActive(true);
+        else keyText.SetActive(false);
+    }
+
     public void GameOver()
     {
-        BossTrigger bossTrigger = boss.GetComponent<BossTrigger>();
-
         scriptedEvent = true;
         ResetScreen.SetActive(true);
         FindObjectOfType<AudioManager>().StopPlaying("BossMusic");
@@ -45,7 +61,7 @@ public class LevelManager : MonoBehaviour
         if (bossDefeated == false)
         {
             bossBehaviour.bossHP = 3;
-            bossBehaviour.bossRespawn();
+            bossBehaviour.BossRespawn();
             FindObjectOfType<AudioManager>().Play("MainTheme");
         }
         else
@@ -60,5 +76,10 @@ public class LevelManager : MonoBehaviour
             enms.SetActive(true);
         }
         scriptedEvent = false;
+    }
+
+    public void NextPhase()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

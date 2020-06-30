@@ -43,6 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf6e7a06d4b73b4c8d64383531a62fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponStateNumber: 1
   localStartTimeBtwAttacks: 0.9
   localAttackRange: 1.1
   localWeaponText: {fileID: 0}
+  weaponWalk: 2.5
+  weaponRun: 4.5
